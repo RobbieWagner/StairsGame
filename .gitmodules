@@ -1,0 +1,6 @@
+[submodule "StairsGame/Assets/restricted"]
+	path = StairsGame/Assets/restricted
+	url = https://github.com/RobbieWagner/StairsGameRestricted.git
+[submodule "StairsGameFMOD/Assets/SoundFiles"]
+	path = StairsGameFMOD/Assets/SoundFiles
+	url = https://github.com/RobbieWagner/StairsGameFMODRestricted.git
