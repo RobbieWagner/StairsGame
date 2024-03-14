@@ -1,0 +1,23 @@
+{
+    "name": "EditorTesting",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d525ad6bd40672747bde77962f1c401e",
+        "GUID:234340c04eed5674a988bc6ebde7d248",
+        "GUID:aab3caaf43456d6449a3e035348ff798",
+        "GUID:194213485063a984b98ce9410892267a",
+        "GUID:613783dc1674e844b87788ea74ede0f6",
+        "GUID:cbdf09464b6b87745be748a67e5a21a0",
+        "GUID:329b4ccd385744985bf3f83cfd77dfe7",
+        "GUID:f12ca39d8321d1c44b69dce6503aeb3d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
