@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RobbieWagnerGames.Player;
 
 namespace RobbieWagnerGames.ZombieStairs
 {
@@ -15,11 +16,10 @@ namespace RobbieWagnerGames.ZombieStairs
     public interface IZombie
     {
         public void Initialize();
-        public void SetHealth();
-        public bool SetZombieSate();
+        public bool SetZombieSate(ZombieState state);
         public void StandIdle();
         public void Wander();
-        public void ChasePlayer();
-        public void AttackPlayer();
+        public void ChasePlayer(IPlayerMovement player);
+        public void AttackPlayer(IPlayerMovement player);
     }
 }

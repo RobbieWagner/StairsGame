@@ -1,0 +1,74 @@
+{
+    "name": "MovementControls",
+    "maps": [
+        {
+            "name": "Movement",
+            "id": "9c029a86-9700-40f7-ae12-2ddb8ca61f33",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "0178ae90-9a8c-48d3-aa3a-b6ef284e2a82",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Run",
+                    "type": "Button",
+                    "id": "2ec4e7e9-2683-4ab4-bfd5-335018f6cd13",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "40f8b30c-3311-4cc9-8ffe-eedbb4c87b6e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c6411ec3-eb21-437c-9ed1-09b6fb833201",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8b61d21a-6c6b-470d-9782-4798d3475a6e",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92755fd7-b5b4-4e56-a8e8-4a1a1c654c6e",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
