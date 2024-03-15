@@ -11,8 +11,11 @@ namespace RobbieWagnerGames.Player
     public class PlayerMovement : MonoBehaviour, IPlayerMovement
     {
         [SerializeField] Rigidbody2D body;
+        [SerializeField] private LayerMask groundMask; 
+        private Vector2 lastFramePos;
         [SerializeField] UnitAnimator unitAnimator;
         private MovementControls playerMovementControls;
+        private const float GRAVITY = 9.8f;
 
         private float movementInput;
         private bool moving;
@@ -31,6 +34,8 @@ namespace RobbieWagnerGames.Player
 
         [SerializeField] public List<EventReference> movementSounds;
 
+        bool isGrounded = false;
+
 
         private void Awake() 
         {
@@ -39,7 +44,7 @@ namespace RobbieWagnerGames.Player
             running = false;
             hasRecentlyMoved = false;
 
-            unitAnimator = GetComponent<UnitAnimator>();
+            //unitAnimator = GetComponent<UnitAnimator>();
 
             currentRunSpeed = defaultRunSpeed;
             currentWalkSpeed = defaultWalkSpeed;
@@ -55,7 +60,38 @@ namespace RobbieWagnerGames.Player
             playerMovementControls.Movement.Interact.performed += OnInteract;
         }
 
-        private void FixedUpdate() => body.velocity = new Vector2(movementInput * movementSpeed, 0);
+        private void FixedUpdate() => body.velocity = new Vector2(movementInput * movementSpeed, isGrounded ? 0 : body.velocity.y - GRAVITY * Time.deltaTime);
+
+        private void LateUpdate()
+        {
+            UpdateGroundCheck();
+
+            // if (characterController.enabled) 
+            //     characterController.Move(movementVector * currentWalkSpeed * Time.deltaTime);
+
+            lastFramePos = transform.position;
+
+            // if (moving)
+            //     PlayMovementSounds();
+        }
+
+        private void UpdateGroundCheck()
+        {
+            RaycastHit2D hit = Physics2D.Raycast((Vector2) transform.position + new Vector2(0, -.4f), Vector2.down, -.01f, groundMask);
+            isGrounded = hit.collider != null;
+            Debug.Log($"{isGrounded}");
+
+            //TODO: Calculate slope for physics updating
+
+            // if (hit.collider != null)
+            // {
+            //     GroundInfo groundInfo = hit.collider.gameObject.GetComponent<GroundInfo>();
+            //     if (groundInfo != null)
+            //         CurrentGroundType = groundInfo.groundType;  
+            //     else
+            //         CurrentGroundType = GroundType.None;
+            // }
+        }
 
         private void OnMove(InputAction.CallbackContext context)
         {
