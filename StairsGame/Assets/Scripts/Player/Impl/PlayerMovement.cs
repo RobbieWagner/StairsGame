@@ -14,7 +14,7 @@ namespace RobbieWagnerGames.Player
         [SerializeField] UnitAnimator unitAnimator;
         private MovementControls playerMovementControls;
 
-        private Vector2 movementVector;
+        private float movementInput;
         private bool moving;
         float moveLimiter = 0.7f;
 
@@ -55,17 +55,17 @@ namespace RobbieWagnerGames.Player
             playerMovementControls.Movement.Interact.performed += OnInteract;
         }
 
-        private void FixedUpdate() => body.velocity = new Vector2(movementVector.x * movementSpeed, movementVector.y * movementSpeed);
+        private void FixedUpdate() => body.velocity = new Vector2(movementInput * movementSpeed, 0);
 
         private void OnMove(InputAction.CallbackContext context)
         {
             if(canMove)
             {
-                Vector2 input = context.ReadValue<Vector2>();
+                float input = context.ReadValue<float>();
 
-                if(movementVector.x != input.x && input.x != 0f)
+                if(movementInput != input && input != 0f)
                 {
-                    if(input.x > 0) 
+                    if(input > 0) 
                     {
                         if(running)
                             unitAnimator.ChangeAnimationState(UnitAnimationState.RunRight);
@@ -81,40 +81,21 @@ namespace RobbieWagnerGames.Player
                     }
                     moving = true;
                 }
-                else if(input.x == 0 && movementVector.y != input.y && input.y != 0f)
-                {
-                    if(input.y > 0) 
-                    {
-                        if(running)
-                            unitAnimator.ChangeAnimationState(UnitAnimationState.RunForward);
-                        else
-                            unitAnimator.ChangeAnimationState(UnitAnimationState.WalkForward);
-                    }
-                    else  
-                    {
-                        if(running)
-                            unitAnimator.ChangeAnimationState(UnitAnimationState.RunBack);
-                        else
-                            unitAnimator.ChangeAnimationState(UnitAnimationState.WalkBack);
-                    }
-                    moving = true;
-                }
                 
-                movementVector.x = input.x;
-                movementVector.y = input.y;
+                movementInput = input;
             }
         }
 
         private void OnStopMoving(InputAction.CallbackContext context)
         {
-            if(movementVector.x > 0)unitAnimator.ChangeAnimationState(UnitAnimationState.IdleRight);
-            else if(movementVector.x < 0)unitAnimator.ChangeAnimationState(UnitAnimationState.IdleLeft);
-            else if(movementVector.y > 0) unitAnimator.ChangeAnimationState(UnitAnimationState.IdleForward);
+            if(movementInput > 0)unitAnimator.ChangeAnimationState(UnitAnimationState.IdleRight);
+            else if(movementInput < 0)unitAnimator.ChangeAnimationState(UnitAnimationState.IdleLeft);
+            else if(movementInput > 0) unitAnimator.ChangeAnimationState(UnitAnimationState.IdleForward);
             else unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
             moving = false;
             //movementSounds?.ToggleMovementSounds(false);
 
-            movementVector = Vector2.zero;
+            movementInput = 0;
         }
 
         public void OnStartRun(InputAction.CallbackContext context)
@@ -125,16 +106,16 @@ namespace RobbieWagnerGames.Player
 
             if(moving)
             {
-                if(Mathf.Abs(movementVector.x) > Mathf.Abs(movementVector.y))
+                if(Mathf.Abs(movementInput) > Mathf.Abs(movementInput))
                 {
-                    if(movementVector.x > 0) 
+                    if(movementInput > 0) 
                         unitAnimator.ChangeAnimationState(UnitAnimationState.RunRight);
                     else 
                         unitAnimator.ChangeAnimationState(UnitAnimationState.RunLeft);
                 }
                 else
                 {
-                    if(movementVector.y > 0)
+                    if(movementInput > 0)
                         unitAnimator.ChangeAnimationState(UnitAnimationState.RunForward);
                     else  
                         unitAnimator.ChangeAnimationState(UnitAnimationState.RunBack);
@@ -150,16 +131,16 @@ namespace RobbieWagnerGames.Player
 
             if(moving)
             {
-                if(Mathf.Abs(movementVector.x) > Mathf.Abs(movementVector.y))
+                if(Mathf.Abs(movementInput) > Mathf.Abs(movementInput))
                 {
-                    if(movementVector.x > 0) 
+                    if(movementInput > 0) 
                         unitAnimator.ChangeAnimationState(UnitAnimationState.WalkRight);
                     else 
                         unitAnimator.ChangeAnimationState(UnitAnimationState.WalkLeft);
                 }
                 else
                 {
-                    if(movementVector.y > 0)
+                    if(movementInput > 0)
                         unitAnimator.ChangeAnimationState(UnitAnimationState.WalkForward);
                     else  
                         unitAnimator.ChangeAnimationState(UnitAnimationState.WalkBack);
