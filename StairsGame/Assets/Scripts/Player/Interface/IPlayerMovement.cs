@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace RobbieWagnerGames.Player
 {
-    public interface IPlayerMovement
+    public interface I2DMovement
     {
         
     }

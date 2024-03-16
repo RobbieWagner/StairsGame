@@ -2,24 +2,24 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using RobbieWagnerGames;
+using RobbieWagnerGames.Player;
 using UnityEngine.InputSystem;
 using FMODUnity;
 
-namespace RobbieWagnerGames.Player
+namespace RobbieWagnerGames.ZombieStairs
 {
-    public class PlayerMovement : MonoBehaviour, IPlayerMovement
+    public class PlayerMovement : MonoBehaviour, I2DMovement
     {
-        [SerializeField] Rigidbody2D body;
+        //[SerializeField] Rigidbody2D body;
+        [SerializeField] private Controller2D characterController;
         [SerializeField] private LayerMask groundMask; 
-        private Vector2 lastFramePos;
         [SerializeField] UnitAnimator unitAnimator;
         private MovementControls playerMovementControls;
         private const float GRAVITY = 9.8f;
 
         private float movementInput;
         private bool moving;
-        float moveLimiter = 0.7f;
+        private Vector2 velocity;
 
         private float movementSpeed;
         public float defaultWalkSpeed = 3f;
@@ -44,8 +44,6 @@ namespace RobbieWagnerGames.Player
             running = false;
             hasRecentlyMoved = false;
 
-            //unitAnimator = GetComponent<UnitAnimator>();
-
             currentRunSpeed = defaultRunSpeed;
             currentWalkSpeed = defaultWalkSpeed;
 
@@ -60,37 +58,18 @@ namespace RobbieWagnerGames.Player
             playerMovementControls.Movement.Interact.performed += OnInteract;
         }
 
-        private void FixedUpdate() => body.velocity = new Vector2(movementInput * movementSpeed, isGrounded ? 0 : body.velocity.y - GRAVITY * Time.deltaTime);
-
-        private void LateUpdate()
+        private void FixedUpdate()
         {
-            UpdateGroundCheck();
-
-            // if (characterController.enabled) 
-            //     characterController.Move(movementVector * currentWalkSpeed * Time.deltaTime);
-
-            lastFramePos = transform.position;
-
-            // if (moving)
-            //     PlayMovementSounds();
+            velocity = new Vector2(movementInput * movementSpeed * Time.deltaTime, isGrounded ? 0 : - GRAVITY * Time.deltaTime);
+            characterController.Move(velocity);
         }
+
+        private void LateUpdate() => UpdateGroundCheck();
 
         private void UpdateGroundCheck()
         {
-            RaycastHit2D hit = Physics2D.Raycast((Vector2) transform.position + new Vector2(0, -.4f), Vector2.down, -.01f, groundMask);
+            RaycastHit2D hit = Physics2D.Raycast((Vector2) transform.position, Vector2.down, -.01f, groundMask);
             isGrounded = hit.collider != null;
-            Debug.Log($"{isGrounded}");
-
-            //TODO: Calculate slope for physics updating
-
-            // if (hit.collider != null)
-            // {
-            //     GroundInfo groundInfo = hit.collider.gameObject.GetComponent<GroundInfo>();
-            //     if (groundInfo != null)
-            //         CurrentGroundType = groundInfo.groundType;  
-            //     else
-            //         CurrentGroundType = GroundType.None;
-            // }
         }
 
         private void OnMove(InputAction.CallbackContext context)
@@ -124,10 +103,15 @@ namespace RobbieWagnerGames.Player
 
         private void OnStopMoving(InputAction.CallbackContext context)
         {
-            if(movementInput > 0)unitAnimator.ChangeAnimationState(UnitAnimationState.IdleRight);
-            else if(movementInput < 0)unitAnimator.ChangeAnimationState(UnitAnimationState.IdleLeft);
-            else if(movementInput > 0) unitAnimator.ChangeAnimationState(UnitAnimationState.IdleForward);
-            else unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
+            if(movementInput > 0)
+                unitAnimator.ChangeAnimationState(UnitAnimationState.IdleRight);
+            else if(movementInput < 0)
+                unitAnimator.ChangeAnimationState(UnitAnimationState.IdleLeft);
+            else if(movementInput > 0) 
+                unitAnimator.ChangeAnimationState(UnitAnimationState.IdleForward);
+            else 
+                unitAnimator.ChangeAnimationState(UnitAnimationState.Idle);
+
             moving = false;
             //movementSounds?.ToggleMovementSounds(false);
 
@@ -189,8 +173,10 @@ namespace RobbieWagnerGames.Player
             currentWalkSpeed = newWalkSpeed;
             currentRunSpeed = newRunSpeed;
 
-            if(running) movementSpeed = currentRunSpeed;
-            else movementSpeed = currentWalkSpeed;
+            if(running) 
+                movementSpeed = currentRunSpeed;
+            else 
+                movementSpeed = currentWalkSpeed;
         }
 
         public void ResetSpeeds()
@@ -198,11 +184,14 @@ namespace RobbieWagnerGames.Player
             currentRunSpeed = defaultRunSpeed;
             currentWalkSpeed = defaultWalkSpeed;
 
-            if(running) movementSpeed = currentRunSpeed;
-            else movementSpeed = currentWalkSpeed;
+            if(running) 
+                movementSpeed = currentRunSpeed;
+            else 
+                movementSpeed = currentWalkSpeed;
         }
         private void OnInteract(InputAction.CallbackContext context)
         {
+            
         }
     }
 }

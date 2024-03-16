@@ -25,7 +25,7 @@ namespace RobbieWagnerGames.ZombieStairs
             health = maxHealth;
         }
 
-        public void AttackPlayer(IPlayerMovement player)
+        public void AttackPlayer(IPlayer player)
         {
             throw new System.NotImplementedException();
         }
@@ -50,7 +50,7 @@ namespace RobbieWagnerGames.ZombieStairs
             throw new System.NotImplementedException();
         }
 
-        public void ChasePlayer(IPlayerMovement player)
+        public void ChasePlayer(IPlayer player)
         {
             throw new System.NotImplementedException();
         }
