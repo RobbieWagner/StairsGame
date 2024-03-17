@@ -8,6 +8,7 @@ namespace RobbieWagnerGames.ZombieStairs
     public class PlayerInstance : MonoBehaviour, IStairsActor
     {
         [HideInInspector] public Stairs currentStairs = null;
+        [SerializeField] private SpriteRenderer playerSprite; 
         private int currentFlight;
         private int currentFloor;
         [HideInInspector] public bool isOnBackground = false;
@@ -15,6 +16,9 @@ namespace RobbieWagnerGames.ZombieStairs
         private AutoMovement autoMovement;
 
         public event IStairsActor.OnMoveBackwardForwardDelegate OnMoveBackwardForward;
+
+        private int PLAYER_BACKGROUND_LAYER = 0;
+        private int PLAYER_FOREGROUND_LAYER = 2;
 
         public static PlayerInstance Instance {get; private set;}
 
@@ -37,6 +41,8 @@ namespace RobbieWagnerGames.ZombieStairs
         {
             isOnBackground = false;
             yield return null;
+            playerSprite.sortingOrder = PLAYER_FOREGROUND_LAYER;
+            playerSprite.color = Color.white;
             OnMoveBackwardForward?.Invoke(this, true);
         }
 
@@ -44,6 +50,8 @@ namespace RobbieWagnerGames.ZombieStairs
         {
             yield return null;
             isOnBackground = true;
+            playerSprite.sortingOrder = PLAYER_BACKGROUND_LAYER;
+            playerSprite.color = new Color(.7f, .7f, .7f, 1f);
             OnMoveBackwardForward?.Invoke(this, false);
         }
 
@@ -90,6 +98,8 @@ namespace RobbieWagnerGames.ZombieStairs
                     StartCoroutine(autoMovement.MoveForwardBackward(true));
                 currentFlight++;
             }
+
+            StairsManager.Instance.InstantiateNewStairs();
         }
     }
 }

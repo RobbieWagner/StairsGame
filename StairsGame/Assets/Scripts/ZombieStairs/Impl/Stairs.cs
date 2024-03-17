@@ -1,16 +1,27 @@
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using RobbieWagnerGames.Player;
 using UnityEngine;
 
 namespace RobbieWagnerGames.ZombieStairs
 {
+    [System.Serializable]
+    public class StairSpecs
+    {
+        public bool ascendsRight = true;
+        public int challengeRating = 0;
+        public float flightHeight = 3.125f; 
+        public float prevFlightOverlap = .125f;
+    }
     public class Stairs : MonoBehaviour, IStairs
     {
         [field: SerializeField] public int flightNumber {get; private set;}
         public int floorNumber => flightNumber/2;
         public static bool EVEN_FLIGHT_MEANS_FOREGROUND = true;
+        [SerializeField] public StairSpecs specs;
 
+        public GameObject parent;
         public Collider2D stairsCollider;
         private HashSet<IStairsActor> stairsActors;
 
@@ -35,6 +46,13 @@ namespace RobbieWagnerGames.ZombieStairs
                 stairsActor.OnMoveBackwardForward -= UpdateColliderForEntity;
             stairsActors.Remove(stairsActor);
         }
+        
+        private void OnDestroy()
+        {
+            List<IStairsActor> stairsActorsList = stairsActors.ToList();
+            foreach(IStairsActor actor in stairsActorsList)
+                DeregisterEntity(actor);
+        }
 
         public void UpdateColliderForEntity(IStairsActor agent, bool toForeground = true)
         {
@@ -51,5 +69,11 @@ namespace RobbieWagnerGames.ZombieStairs
 
         //Return true if stairs are foreground (flight is even and foreground flights are even or both are odd)
         public bool isStairsForeground() => EVEN_FLIGHT_MEANS_FOREGROUND == isFlightValueEven();
+
+        public void SetFlightValue(int flight) => flightNumber = flight;
+
+        public GameObject GetGameObject() => parent != null? parent : gameObject;
+
+        public int GetFlightValue() => flightNumber;
     }
 }
