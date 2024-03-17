@@ -8,6 +8,7 @@ namespace RobbieWagnerGames.Player
     {
         int CurrentFlight();
         int CurrentFloor();
+        void OnLandingReached();
         bool CanMoveToBackground();
         bool CanMoveToForeground();
         IEnumerator MoveToBackground();

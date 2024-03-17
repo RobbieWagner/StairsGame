@@ -4,12 +4,15 @@ using UnityEngine;
 
 namespace RobbieWagnerGames.ZombieStairs
 {
-    [RequireComponent (typeof (PlayerMovement))]
+    [RequireComponent (typeof (I2DMovement))]
     public class PlayerInstance : MonoBehaviour, IStairsActor
     {
         [HideInInspector] public Stairs currentStairs = null;
+        private int currentFlight;
+        private int currentFloor;
         [HideInInspector] public bool isOnBackground = false;
         private PlayerMovement playerMovement;
+        private AutoMovement autoMovement;
 
         public event IStairsActor.OnMoveBackwardForwardDelegate OnMoveBackwardForward;
 
@@ -23,6 +26,7 @@ namespace RobbieWagnerGames.ZombieStairs
                 Instance = this; 
 
             playerMovement = GetComponentInChildren<PlayerMovement>();    
+            autoMovement = GetComponentInChildren<AutoMovement>();
         }
 
         public bool CanMoveToBackground() => currentStairs == null && !isOnBackground;
@@ -43,15 +47,9 @@ namespace RobbieWagnerGames.ZombieStairs
             OnMoveBackwardForward?.Invoke(this, false);
         }
 
-        public int CurrentFlight()
-        {
-            throw new System.NotImplementedException();
-        }
+        public int CurrentFlight() => currentFlight;
 
-        public int CurrentFloor()
-        {
-            throw new System.NotImplementedException();
-        }
+        public int CurrentFloor() => currentFloor;
 
         public void KillPlayer()
         {
@@ -65,9 +63,33 @@ namespace RobbieWagnerGames.ZombieStairs
                 return;
 
             currentStairs = stairs;
-            Debug.Log($"is player on stairs? {currentStairs != null}");
+            //Debug.Log($"is player on stairs? {currentStairs != null}");
         }
 
-        public Collider2D GetCollider() => playerMovement.GetComponentInChildren<Collider2D>();
+        public Collider2D GetCollider()
+        {
+            return playerMovement != null ? playerMovement.GetComponentInChildren<Collider2D>() 
+                    : autoMovement != null ? autoMovement.GetComponentInChildren<Collider2D>() 
+                    : null;
+        }
+
+        // can be better (coupled)
+        public void OnLandingReached()
+        {
+            if(CanMoveToBackground())
+            {
+                Debug.Log("Moved to BG");
+                if(autoMovement != null)
+                    StartCoroutine(autoMovement.MoveForwardBackward(false));
+                currentFlight++;
+            }
+            else if(CanMoveToForeground())
+            {
+                Debug.Log("Moved to FG");
+                if(autoMovement != null)
+                    StartCoroutine(autoMovement.MoveForwardBackward(true));
+                currentFlight++;
+            }
+        }
     }
 }

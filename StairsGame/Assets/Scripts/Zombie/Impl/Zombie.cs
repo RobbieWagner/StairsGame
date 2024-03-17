@@ -96,5 +96,10 @@ namespace RobbieWagnerGames.ZombieStairs
         }
 
         public Collider2D GetCollider() => zombieCollider;
+
+        public void OnLandingReached()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
