@@ -53,6 +53,24 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnterForeground"",
+                    ""type"": ""Button"",
+                    ""id"": ""e77e8b6d-dbf8-4def-9999-e207ed96dabb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnterBackground"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0e17645-dd6a-4d45-9afe-d966012b6a48"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -154,6 +172,72 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5bb35e37-9df4-4f49-9995-84ee76d1ec98"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterForeground"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b99b47cc-982d-4111-8732-1f8edabcaecd"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterForeground"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9b20cf55-17e6-410a-ae50-749b0d076c13"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterForeground"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c827e684-7409-4777-aad3-e4ce765a0ca8"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterBackground"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c50fdc1-1db7-4823-975f-a7e0916245e7"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterBackground"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e57182bb-03dd-43dd-acca-9a3a80bf37c9"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterBackground"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -165,6 +249,8 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
         m_Movement_Run = m_Movement.FindAction("Run", throwIfNotFound: true);
         m_Movement_Interact = m_Movement.FindAction("Interact", throwIfNotFound: true);
+        m_Movement_EnterForeground = m_Movement.FindAction("EnterForeground", throwIfNotFound: true);
+        m_Movement_EnterBackground = m_Movement.FindAction("EnterBackground", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +315,8 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Move;
     private readonly InputAction m_Movement_Run;
     private readonly InputAction m_Movement_Interact;
+    private readonly InputAction m_Movement_EnterForeground;
+    private readonly InputAction m_Movement_EnterBackground;
     public struct MovementActions
     {
         private @MovementControls m_Wrapper;
@@ -236,6 +324,8 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Movement_Move;
         public InputAction @Run => m_Wrapper.m_Movement_Run;
         public InputAction @Interact => m_Wrapper.m_Movement_Interact;
+        public InputAction @EnterForeground => m_Wrapper.m_Movement_EnterForeground;
+        public InputAction @EnterBackground => m_Wrapper.m_Movement_EnterBackground;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -254,6 +344,12 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @EnterForeground.started += instance.OnEnterForeground;
+            @EnterForeground.performed += instance.OnEnterForeground;
+            @EnterForeground.canceled += instance.OnEnterForeground;
+            @EnterBackground.started += instance.OnEnterBackground;
+            @EnterBackground.performed += instance.OnEnterBackground;
+            @EnterBackground.canceled += instance.OnEnterBackground;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -267,6 +363,12 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @EnterForeground.started -= instance.OnEnterForeground;
+            @EnterForeground.performed -= instance.OnEnterForeground;
+            @EnterForeground.canceled -= instance.OnEnterForeground;
+            @EnterBackground.started -= instance.OnEnterBackground;
+            @EnterBackground.performed -= instance.OnEnterBackground;
+            @EnterBackground.canceled -= instance.OnEnterBackground;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -289,5 +391,7 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnEnterForeground(InputAction.CallbackContext context);
+        void OnEnterBackground(InputAction.CallbackContext context);
     }
 }

@@ -19,7 +19,7 @@ namespace RobbieWagnerGames.ZombieStairs
         public bool SetZombieSate(ZombieState state);
         public void StandIdle();
         public void Wander();
-        public void ChasePlayer(IPlayer player);
-        public void AttackPlayer(IPlayer player);
+        public void ChasePlayer(IStairsActor player);
+        public void AttackPlayer(IStairsActor player);
     }
 }

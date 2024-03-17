@@ -134,7 +134,8 @@ GameObject:
   - component: {fileID: 395973103}
   - component: {fileID: 395973102}
   - component: {fileID: 395973104}
-  m_Layer: 3
+  - component: {fileID: 395973105}
+  m_Layer: 6
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,6 +260,20 @@ PolygonCollider2D:
       - {x: -2.7590504, y: -0.004178047}
       - {x: 2.995465, y: 2.8815172}
   m_UseDelaunayMesh: 0
+--- !u!114 &395973105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395973101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5050e88253ab98946958e5af97ee6e24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <flightNumber>k__BackingField: 0
+  stairsCollider: {fileID: 395973104}
 --- !u!1 &431829659
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,6 +852,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1139907700}
   - component: {fileID: 1139907699}
+  - component: {fileID: 1139907701}
   m_Layer: 3
   m_Name: Landing2
   m_TagString: Untagged
@@ -911,6 +927,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1139907701
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1139907698}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 2.9670684}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 5, y: 6}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5, y: 0.2729373}
+  m_EdgeRadius: 0
 --- !u!1 &1489441931
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,7 +982,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1489441933}
   - component: {fileID: 1489441932}
-  m_Layer: 3
+  - component: {fileID: 1489441934}
+  - component: {fileID: 1489441935}
+  m_Layer: 7
   m_Name: Stairs2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -995,6 +1058,71 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &1489441934
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489441931}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 6, y: 4}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -2.9647171, y: 3.1045005}
+      - {x: -3.0004532, y: 3.1036046}
+      - {x: -3.0021477, y: 2.8729436}
+      - {x: 2.7228312, y: 0.025049448}
+      - {x: 3.0250494, y: 0.09474766}
+      - {x: 2.9654813, y: 0.1404202}
+  m_UseDelaunayMesh: 0
+--- !u!114 &1489441935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489441931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5050e88253ab98946958e5af97ee6e24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <flightNumber>k__BackingField: 1
+  stairsCollider: {fileID: 1489441934}
 --- !u!1 &1643295410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,6 +1136,7 @@ GameObject:
   - component: {fileID: 1643295419}
   - component: {fileID: 1643295418}
   - component: {fileID: 1643295420}
+  - component: {fileID: 1643295421}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1071,9 +1200,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 1643295420}
-  groundMask:
+  foregroundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 72
+  backgroundMask:
+    serializedVersion: 2
+    m_Bits: 136
   unitAnimator: {fileID: 1701761599}
   defaultWalkSpeed: 3
   defaultRunSpeed: 6
@@ -1142,6 +1274,20 @@ MonoBehaviour:
     m_Bits: 8
   horizontalRayCount: 4
   verticalRayCount: 4
+--- !u!114 &1643295421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643295410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 076eccaaccdd6834f99f394ec647add7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentStairs: {fileID: 0}
+  isOnBackground: 0
 --- !u!1 &1701761598
 GameObject:
   m_ObjectHideFlags: 0

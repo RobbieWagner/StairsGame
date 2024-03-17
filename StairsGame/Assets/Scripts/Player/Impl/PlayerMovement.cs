@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using RobbieWagnerGames.Player;
 using UnityEngine.InputSystem;
 using FMODUnity;
+using System.Linq;
 
 namespace RobbieWagnerGames.ZombieStairs
 {
@@ -12,10 +13,11 @@ namespace RobbieWagnerGames.ZombieStairs
     {
         //[SerializeField] Rigidbody2D body;
         [SerializeField] private Controller2D characterController;
-        [SerializeField] private LayerMask groundMask; 
+        [SerializeField] private LayerMask foregroundMask; 
+        [SerializeField] private LayerMask backgroundMask; 
         [SerializeField] UnitAnimator unitAnimator;
         private MovementControls playerMovementControls;
-        private const float GRAVITY = 9.8f;
+        private const float GRAVITY = 15f;
 
         private float movementInput;
         private bool moving;
@@ -36,6 +38,8 @@ namespace RobbieWagnerGames.ZombieStairs
 
         bool isGrounded = false;
 
+        Coroutine forwardBackwardMovementCoroutine = null;
+
 
         private void Awake() 
         {
@@ -47,6 +51,8 @@ namespace RobbieWagnerGames.ZombieStairs
             currentRunSpeed = defaultRunSpeed;
             currentWalkSpeed = defaultWalkSpeed;
 
+            characterController.collisionMask = PlayerInstance.Instance.isOnBackground ? backgroundMask : foregroundMask;
+
             playerMovementControls = new MovementControls();
             playerMovementControls.Enable();
 
@@ -55,12 +61,15 @@ namespace RobbieWagnerGames.ZombieStairs
             playerMovementControls.Movement.Run.performed += OnStartRun;
             playerMovementControls.Movement.Run.canceled += OnStopRun;
 
+            playerMovementControls.Movement.EnterForeground.performed += OnEnterForeground;
+            playerMovementControls.Movement.EnterBackground.performed += OnEnterBackground;
+
             playerMovementControls.Movement.Interact.performed += OnInteract;
         }
 
         private void FixedUpdate()
         {
-            velocity = new Vector2(movementInput * movementSpeed * Time.deltaTime, isGrounded ? 0 : - GRAVITY * Time.deltaTime);
+            velocity = new Vector2(movementInput * movementSpeed * Time.deltaTime, isGrounded ? -1f : - GRAVITY * Time.deltaTime);
             characterController.Move(velocity);
         }
 
@@ -68,8 +77,21 @@ namespace RobbieWagnerGames.ZombieStairs
 
         private void UpdateGroundCheck()
         {
-            RaycastHit2D hit = Physics2D.Raycast((Vector2) transform.position, Vector2.down, -.01f, groundMask);
-            isGrounded = hit.collider != null;
+            RaycastHit2D[] hits = Physics2D.RaycastAll((Vector2) transform.position, Vector2.down, .25f, PlayerInstance.Instance.isOnBackground? backgroundMask : foregroundMask);
+            //Debug.DrawLine(transform.position, transform.position + Vector3.down * .25f, Color.green);
+            if(hits.Any())
+            {
+                isGrounded = true;
+                var stairs = hits.Select(hit => hit.collider.GetComponentInChildren<Stairs>()).Where(flight => flight != null); 
+                //Debug.Log($"number of found stairs {stairs.Count()}");
+                PlayerInstance.Instance.SetCurrentStairs(stairs.Any() ? stairs.First() : null);
+            }
+            else
+            {
+                isGrounded = false;
+                PlayerInstance.Instance.SetCurrentStairs(null);
+            }
+            //Debug.Log($"is grounded? {isGrounded}");
         }
 
         private void OnMove(InputAction.CallbackContext context)
@@ -116,6 +138,37 @@ namespace RobbieWagnerGames.ZombieStairs
             //movementSounds?.ToggleMovementSounds(false);
 
             movementInput = 0;
+        }
+
+        public void OnEnterForeground(InputAction.CallbackContext context)
+        {
+            forwardBackwardMovementCoroutine = StartCoroutine(MoveForwardBackward(true));
+            //Debug.Log("move to fg");
+        }
+
+        public void OnEnterBackground(InputAction.CallbackContext context)
+        {
+            forwardBackwardMovementCoroutine = StartCoroutine(MoveForwardBackward(false));
+            //Debug.Log("move to bg");
+        }
+
+        public IEnumerator MoveForwardBackward(bool toForeground)
+        {
+            canMove = false;
+
+            if(toForeground && PlayerInstance.Instance.CanMoveToForeground())
+            {
+                yield return StartCoroutine(PlayerInstance.Instance.MoveToForeground());
+                characterController.collisionMask = foregroundMask;
+            }
+            else if (PlayerInstance.Instance.CanMoveToBackground())
+            {
+                yield return StartCoroutine(PlayerInstance.Instance.MoveToBackground());
+                characterController.collisionMask = backgroundMask;
+            }
+
+            canMove = true;
+            forwardBackwardMovementCoroutine = null;
         }
 
         public void OnStartRun(InputAction.CallbackContext context)
@@ -168,7 +221,7 @@ namespace RobbieWagnerGames.ZombieStairs
             }
         }
 
-        public void ChangePlayerSpeed(float newWalkSpeed, float newRunSpeed)
+        public void ChangeSpeed(float newWalkSpeed, float newRunSpeed)
         {
             currentWalkSpeed = newWalkSpeed;
             currentRunSpeed = newRunSpeed;
