@@ -9,29 +9,29 @@ namespace RobbieWagnerGames.ZombieStairs
 {
     public class AutoMovement : MonoBehaviour, I2DMovement
     {
-        [SerializeField] private Controller2D characterController;
-        [SerializeField] private LayerMask foregroundMask; 
-        [SerializeField] private LayerMask backgroundMask; 
+        [SerializeField] protected Controller2D characterController;
+        [SerializeField] protected LayerMask foregroundMask; 
+        [SerializeField] protected LayerMask backgroundMask; 
         [SerializeField] UnitAnimator unitAnimator;
-        private const float GRAVITY = 15f;
+        protected const float GRAVITY = 15f;
         private bool moving;
-        private Vector2 velocity;
-        private float movementSpeed;
+        protected Vector2 velocity;
+        protected float movementSpeed;
         public float defaultWalkSpeed = 3f;
-        private float currentWalkSpeed;
+        protected float currentWalkSpeed;
 
-        bool running;
+        protected bool running;
         public float defaultRunSpeed = 6f;
-        private float currentRunSpeed;
+        protected float currentRunSpeed;
 
-        public bool canMove;
+        public bool canMove = true;
         [SerializeField] public List<EventReference> movementSounds;
 
-        bool isGrounded = false;
+        protected bool isGrounded = false;
 
         Coroutine forwardBackwardMovementCoroutine = null;
 
-        private void Awake() 
+        protected virtual void Awake() 
         {
             canMove = true;
             movementSpeed = defaultWalkSpeed;
@@ -43,17 +43,18 @@ namespace RobbieWagnerGames.ZombieStairs
             characterController.collisionMask = PlayerInstance.Instance.isOnBackground ? backgroundMask : foregroundMask;
         }
 
-         private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             float direction = PlayerInstance.Instance.CurrentFlight() % 2 == 0 ? 1 : -1;
             velocity = new Vector2(direction * movementSpeed * Time.deltaTime, 
                                 isGrounded ? -1f : - GRAVITY * Time.deltaTime);
-            characterController.Move(velocity);
+            if(canMove)
+                characterController.Move(velocity);
         }
 
-        private void LateUpdate() => UpdateGroundCheck();
+        protected virtual void LateUpdate() => UpdateGroundCheck();
 
-        private void UpdateGroundCheck()
+        protected virtual void UpdateGroundCheck()
         {
             RaycastHit2D[] hits = Physics2D.RaycastAll((Vector2) transform.position, Vector2.down, .25f, PlayerInstance.Instance.isOnBackground? backgroundMask : foregroundMask);
             //Debug.DrawLine(transform.position, transform.position + Vector3.down * .25f, Color.green);
@@ -82,7 +83,7 @@ namespace RobbieWagnerGames.ZombieStairs
             throw new System.NotImplementedException();
         }
 
-        public IEnumerator MoveForwardBackward(bool toForeground)
+        public virtual IEnumerator MoveForwardBackward(bool toForeground)
         {
             canMove = false;
 
@@ -91,7 +92,7 @@ namespace RobbieWagnerGames.ZombieStairs
                 yield return StartCoroutine(PlayerInstance.Instance.MoveToForeground());
                 characterController.collisionMask = foregroundMask;
             }
-            else if (PlayerInstance.Instance.CanMoveToBackground())
+            else if (!toForeground && PlayerInstance.Instance.CanMoveToBackground())
             {
                 yield return StartCoroutine(PlayerInstance.Instance.MoveToBackground());
                 characterController.collisionMask = backgroundMask;

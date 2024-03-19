@@ -56,5 +56,8 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "StairsGame.sln"
+    "dotnet.defaultSolution": "StairsGame.sln",
+    "cSpell.words": [
+        "Behaviour"
+    ]
 }

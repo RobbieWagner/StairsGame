@@ -20,6 +20,7 @@ namespace RobbieWagnerGames.ZombieStairs
         public int floorNumber => flightNumber/2;
         public static bool EVEN_FLIGHT_MEANS_FOREGROUND = true;
         [SerializeField] public StairSpecs specs;
+        public Transform spawnPosition;
 
         public GameObject parent;
         public Collider2D stairsCollider;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using RobbieWagnerGames.Player;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace RobbieWagnerGames.ZombieStairs
         [HideInInspector] public bool isOnBackground = false;
         private PlayerMovement playerMovement;
         private AutoMovement autoMovement;
+        public bool canDie = true;
 
         public event IStairsActor.OnMoveBackwardForwardDelegate OnMoveBackwardForward;
 
@@ -31,6 +33,7 @@ namespace RobbieWagnerGames.ZombieStairs
 
             playerMovement = GetComponentInChildren<PlayerMovement>();    
             autoMovement = GetComponentInChildren<AutoMovement>();
+            autoMovement.canMove = false;
         }
 
         public bool CanMoveToBackground() => currentStairs == null && !isOnBackground;
@@ -59,9 +62,13 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public int CurrentFloor() => currentFloor;
 
-        public void KillPlayer()
+        public bool KillPlayer()
         {
-            throw new System.NotImplementedException();
+            if(canDie)
+            {
+                autoMovement.canMove = false;
+            }
+            return false;
         }
 
         public void SetCurrentStairs(Stairs stairs)
@@ -100,6 +107,11 @@ namespace RobbieWagnerGames.ZombieStairs
             }
 
             StairsManager.Instance.InstantiateNewStairs();
+        }
+
+        public void Initialize()
+        {
+            autoMovement.canMove = true;
         }
     }
 }

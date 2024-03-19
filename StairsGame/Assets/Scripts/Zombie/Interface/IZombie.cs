@@ -7,15 +7,16 @@ namespace RobbieWagnerGames.ZombieStairs
 {
     public enum ZombieState
     {
-        Idle,
-        Wandering,
-        Chasing,
-        Attacking
+        None = -1,
+        Idle = 0,
+        Wander = 1,
+        Chasing = 2,
+        Attacking = 3
     }
 
     public interface IZombie
     {
-        public void Initialize();
+        public void Initialize(Stairs stairs);
         public bool SetZombieSate(ZombieState state);
         public void StandIdle();
         public void Wander();
