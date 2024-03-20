@@ -51,7 +51,17 @@ namespace RobbieWagnerGames.ZombieStairs
 
         protected override void FixedUpdate()
         {
-            float direction = CurrentFlight() % 2 == 0 ? 1 : -1;
+            float direction = CurrentFlight() % 2 == 0 
+                ? PlayerInstance.Instance.CurrentFlight() > CurrentFlight() 
+                    ? 1 : PlayerInstance.Instance.CurrentFlight() == CurrentFlight() 
+                        ? PlayerInstance.Instance.transform.position.y > transform.position.y 
+                            ? 1 : -1 : -1
+                : PlayerInstance.Instance.CurrentFlight() > CurrentFlight() 
+                    ? -1 : PlayerInstance.Instance.CurrentFlight() == CurrentFlight() 
+                        ? PlayerInstance.Instance.transform.position.y > transform.position.y 
+                            ? -1 : 1 : 1;
+                            
+            //Debug.Log(CurrentFlight());
             velocity = new Vector2(direction * movementSpeed * Time.deltaTime, 
                                 isGrounded ? -1f : - GRAVITY * Time.deltaTime);
             characterController.Move(velocity);
@@ -66,16 +76,19 @@ namespace RobbieWagnerGames.ZombieStairs
         {
             if(stairs.isFlightValueEven() == Stairs.EVEN_FLIGHT_MEANS_FOREGROUND)
             {
+                //Debug.Log("zombie is foreground");
                 characterController.collisionMask = foregroundMask;
                 StartCoroutine(MoveForwardBackward(true));
                 isOnBackground = false;
             }
             else
             {
+                //Debug.Log("zombie is background");
                 characterController.collisionMask = backgroundMask;
                 StartCoroutine(MoveForwardBackward(false));
                 isOnBackground = true;
             }
+            flight = stairs.flightNumber;
         }
 
         public void StandIdle()
@@ -147,6 +160,7 @@ namespace RobbieWagnerGames.ZombieStairs
             spriteRenderer.sortingOrder = SPRITE_BACKGROUND_LAYER;
             spriteRenderer.color = new Color(.7f, .7f, .7f, 1f);
             OnMoveBackwardForward?.Invoke(this, false);
+            Debug.Log("BG");
         }
 
         public IEnumerator MoveToForeground()
@@ -156,6 +170,7 @@ namespace RobbieWagnerGames.ZombieStairs
             spriteRenderer.sortingOrder = SPRITE_FOREGROUND_LAYER;
             spriteRenderer.color = Color.white;
             OnMoveBackwardForward?.Invoke(this, true);
+            Debug.Log("FG");
         }
 
         public Collider2D GetCollider() => zombieCollider;
@@ -164,7 +179,7 @@ namespace RobbieWagnerGames.ZombieStairs
         {
             if(CanMoveToBackground())
             {
-                Debug.Log("Moved to BG");
+                //Debug.Log("Moved to BG");
                 StartCoroutine(MoveForwardBackward(false));
                 if(movingUp)
                     flight++;
@@ -173,15 +188,13 @@ namespace RobbieWagnerGames.ZombieStairs
             }
             else if(CanMoveToForeground())
             {
-                Debug.Log("Moved to FG");
+                //Debug.Log("Moved to FG");
                 StartCoroutine(MoveForwardBackward(true));
                 if(movingUp)
                     flight++;
                 else
                     flight--;
             }
-
-            StairsManager.Instance.InstantiateNewStairs();
         }
 
         public override IEnumerator MoveForwardBackward(bool toForeground)

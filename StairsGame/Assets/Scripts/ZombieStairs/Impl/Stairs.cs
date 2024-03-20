@@ -60,11 +60,11 @@ namespace RobbieWagnerGames.ZombieStairs
             if(toForeground == isStairsForeground())
             {
                 Physics2D.IgnoreCollision(agent.GetCollider(), stairsCollider, false);
-                Debug.Log($"flight {flightNumber} not ignoring player");
+                //Debug.Log($"flight {flightNumber} not ignoring player");
             }
             else
                 Physics2D.IgnoreCollision(agent.GetCollider(), stairsCollider, true);
-                Debug.Log($"flight {flightNumber} ignoring player");
+                //Debug.Log($"flight {flightNumber} ignoring player");
             
         }
 

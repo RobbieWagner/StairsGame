@@ -73,6 +73,7 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void SetCurrentStairs(Stairs stairs)
         {
+            Debug.Log(stairs == null);
             if((currentStairs == null && stairs == null) ||
             (stairs != null && currentStairs != null && stairs.flightNumber == currentStairs.flightNumber)) 
                 return;
@@ -91,6 +92,7 @@ namespace RobbieWagnerGames.ZombieStairs
         // can be better (coupled)
         public void OnLandingReached()
         {
+            Debug.Log($"is on bg {isOnBackground} can move {currentStairs == null}");
             if(CanMoveToBackground())
             {
                 Debug.Log("Moved to BG");

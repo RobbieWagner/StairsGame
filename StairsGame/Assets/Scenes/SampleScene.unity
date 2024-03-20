@@ -709,6 +709,7 @@ MonoBehaviour:
   zombieParent: {fileID: 1077618920}
   zombieOptions:
   - {fileID: 4121964268074564788, guid: e7648425a5671234c958a50e1f37cef2, type: 3}
+  canSpawnZombies: 1
 --- !u!1 &787792016
 GameObject:
   m_ObjectHideFlags: 0

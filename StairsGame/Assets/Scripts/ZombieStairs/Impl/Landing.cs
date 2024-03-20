@@ -11,7 +11,11 @@ namespace RobbieWagnerGames.ZombieStairs
         {
             IStairsActor stairsActor = other.GetComponentInChildren<IStairsActor>();
             if(stairsActor != null)
+            {
                 stairsActor.OnLandingReached();
+                Debug.Log("reached landing");
+            }
+                
         }
     }
 }

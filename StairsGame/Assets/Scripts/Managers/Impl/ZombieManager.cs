@@ -10,6 +10,7 @@ namespace RobbieWagnerGames.ZombieStairs
         private HashSet<Zombie> zombiesInScene;
         [SerializeField] private Transform zombieParent;
         [SerializeField] private List<Zombie> zombieOptions;
+        public bool canSpawnZombies = true;
 
         public static ZombieManager Instance {get; private set;}
         private void Awake()
@@ -56,7 +57,8 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void SpawnZombie(Stairs stairsForZombie)
         {
-            AddZombieToScene(zombieOptions[UnityEngine.Random.Range(0, zombieOptions.Count)], stairsForZombie);
+            if(canSpawnZombies)
+                AddZombieToScene(zombieOptions[UnityEngine.Random.Range(0, zombieOptions.Count)], stairsForZombie);
         }
 
         public bool RemoveZombieFromScene(Zombie zombie)
