@@ -27,14 +27,11 @@ namespace RobbieWagnerGames.ZombieStairs
 
         private void DestroyUnsupportedZombies(int flight, List<Stairs> stairs)
         {
-
-            var activeFlights = stairs.Select(s => s.flightNumber);
-            foreach(int f in activeFlights) Debug.Log(f);
             List<Zombie> zombies = zombiesInScene.Select(z => z).ToList();
 
             foreach(Zombie zombie in zombies)
             {
-                if(!activeFlights.Contains(zombie.CurrentFlight()) && !zombie.canIgnoreStairDestruction)
+                if(zombie.transform.position.y - PlayerInstance.Instance.transform.position.y < -60 && !zombie.canIgnoreStairDestruction)
                     RemoveZombieFromScene(zombie);
             }
         }

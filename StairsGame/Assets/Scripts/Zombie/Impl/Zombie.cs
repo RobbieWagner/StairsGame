@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Linq;
 using RobbieWagnerGames.Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RobbieWagnerGames.ZombieStairs
 {
@@ -11,6 +13,7 @@ namespace RobbieWagnerGames.ZombieStairs
         [SerializeField] private Collider2D zombieCollider;
         [HideInInspector] public bool isOnBackground = false;
         [SerializeField] protected SpriteRenderer spriteRenderer;
+        [SerializeField] protected Rigidbody2D rb2d;
         protected Stairs currentStairs;
         protected int flight;
         protected int floor => flight/2;
@@ -69,7 +72,14 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void AttackPlayer(IStairsActor player)
         {
-            throw new System.NotImplementedException();
+            SceneManager.LoadScene("SampleScene");
+        }
+
+        protected virtual void OnCollisionEnter2D(Collision2D other)
+        {
+            Debug.Log("hi");
+            if(other.collider.GetComponent<PlayerInstance>() != null)
+                SetZombieSate(ZombieState.Attacking);
         }
 
         public void Initialize(Stairs stairs)
@@ -91,14 +101,14 @@ namespace RobbieWagnerGames.ZombieStairs
             flight = stairs.flightNumber;
         }
 
-        public void StandIdle()
+        public virtual void StandIdle()
         {
-            throw new System.NotImplementedException();
+            Debug.LogWarning("StandIdle not implemented");
         }
 
-        public void Wander()
+        public virtual void Wander()
         {
-            throw new System.NotImplementedException();
+            Debug.LogWarning("Wander not implemented");
         }
 
         public bool SetZombieSate(ZombieState state)
@@ -160,7 +170,7 @@ namespace RobbieWagnerGames.ZombieStairs
             spriteRenderer.sortingOrder = SPRITE_BACKGROUND_LAYER;
             spriteRenderer.color = new Color(.7f, .7f, .7f, 1f);
             OnMoveBackwardForward?.Invoke(this, false);
-            Debug.Log("BG");
+            //Debug.Log("BG");
         }
 
         public IEnumerator MoveToForeground()
@@ -170,7 +180,7 @@ namespace RobbieWagnerGames.ZombieStairs
             spriteRenderer.sortingOrder = SPRITE_FOREGROUND_LAYER;
             spriteRenderer.color = Color.white;
             OnMoveBackwardForward?.Invoke(this, true);
-            Debug.Log("FG");
+            //Debug.Log("FG");
         }
 
         public Collider2D GetCollider() => zombieCollider;
@@ -205,15 +215,37 @@ namespace RobbieWagnerGames.ZombieStairs
             {
                 yield return StartCoroutine(MoveToForeground());
                 characterController.collisionMask = foregroundMask;
+                rb2d.includeLayers = foregroundMask;
+                rb2d.excludeLayers = ignoreBackgroundMask;
             }
             else if (!toForeground && CanMoveToBackground())
             {
                 yield return StartCoroutine(MoveToBackground());
                 characterController.collisionMask = backgroundMask;
+                rb2d.includeLayers = backgroundMask;
+                rb2d.excludeLayers = ignoreForegroundMask;
             }
 
             canMove = true;
             //forwardBackwardMovementCoroutine = null;
+        }
+
+        protected override void UpdateGroundCheck()
+        {
+            RaycastHit2D[] hits = Physics2D.RaycastAll((Vector2) transform.position, Vector2.down, .25f, isOnBackground? backgroundMask : foregroundMask);
+            //Debug.DrawLine(transform.position, transform.position + Vector3.down * .25f, Color.green);
+            if(hits.Any())
+            {
+                isGrounded = true;
+                var stairs = hits.Select(hit => hit.collider.GetComponentInChildren<Stairs>()).Where(flight => flight != null); 
+                //Debug.Log($"number of found stairs {stairs.Count()}");
+                SetCurrentStairs(stairs.Any() ? stairs.First() : null);
+            }
+            else
+            {
+                isGrounded = false;
+                SetCurrentStairs(null);
+            }
         }
     }
 }

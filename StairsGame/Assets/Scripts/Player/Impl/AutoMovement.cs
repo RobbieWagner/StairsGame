@@ -11,7 +11,9 @@ namespace RobbieWagnerGames.ZombieStairs
     {
         [SerializeField] protected Controller2D characterController;
         [SerializeField] protected LayerMask foregroundMask; 
+        [SerializeField] protected LayerMask ignoreBackgroundMask;
         [SerializeField] protected LayerMask backgroundMask; 
+        [SerializeField] protected LayerMask ignoreForegroundMask;
         [SerializeField] UnitAnimator unitAnimator;
         protected const float GRAVITY = 15f;
         private bool moving;

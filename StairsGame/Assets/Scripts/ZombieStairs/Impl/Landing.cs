@@ -13,7 +13,7 @@ namespace RobbieWagnerGames.ZombieStairs
             if(stairsActor != null)
             {
                 stairsActor.OnLandingReached();
-                Debug.Log("reached landing");
+                //Debug.Log("reached landing");
             }
                 
         }

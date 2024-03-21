@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1692155786346043267}
   - component: {fileID: 9020176733130507199}
   - component: {fileID: 8431239121439217885}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,10 +51,16 @@ MonoBehaviour:
   characterController: {fileID: 9020176733130507199}
   foregroundMask:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 328
+  ignoreBackgroundMask:
+    serializedVersion: 2
+    m_Bits: 128
   backgroundMask:
     serializedVersion: 2
-    m_Bits: 136
+    m_Bits: 392
+  ignoreForegroundMask:
+    serializedVersion: 2
+    m_Bits: 64
   unitAnimator: {fileID: 8976677588325068503}
   defaultWalkSpeed: 3
   defaultRunSpeed: 6
@@ -65,6 +71,7 @@ MonoBehaviour:
   zombieCollider: {fileID: 1692155786346043267}
   isOnBackground: 0
   spriteRenderer: {fileID: 5935876488955641840}
+  rb2d: {fileID: 8431239121439217885}
   canIgnoreStairDestruction: 0
 --- !u!61 &1692155786346043267
 BoxCollider2D:
@@ -136,7 +143,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2629687886570880557}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

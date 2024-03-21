@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 1115231674}
   - component: {fileID: 1115231673}
   - component: {fileID: 1115231672}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,10 +949,10 @@ MonoBehaviour:
   characterController: {fileID: 1115231674}
   foregroundMask:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 584
   backgroundMask:
     serializedVersion: 2
-    m_Bits: 136
+    m_Bits: 648
   unitAnimator: {fileID: 2134678756}
   defaultWalkSpeed: 3
   defaultRunSpeed: 6

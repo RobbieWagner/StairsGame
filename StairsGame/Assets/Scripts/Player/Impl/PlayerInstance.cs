@@ -73,13 +73,11 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void SetCurrentStairs(Stairs stairs)
         {
-            Debug.Log(stairs == null);
             if((currentStairs == null && stairs == null) ||
             (stairs != null && currentStairs != null && stairs.flightNumber == currentStairs.flightNumber)) 
                 return;
 
             currentStairs = stairs;
-            //Debug.Log($"is player on stairs? {currentStairs != null}");
         }
 
         public Collider2D GetCollider()
@@ -92,17 +90,17 @@ namespace RobbieWagnerGames.ZombieStairs
         // can be better (coupled)
         public void OnLandingReached()
         {
-            Debug.Log($"is on bg {isOnBackground} can move {currentStairs == null}");
+            //Debug.Log($"is on bg {isOnBackground} can move {currentStairs == null}");
             if(CanMoveToBackground())
             {
-                Debug.Log("Moved to BG");
+                //Debug.Log("Moved to BG");
                 if(autoMovement != null)
                     StartCoroutine(autoMovement.MoveForwardBackward(false));
                 currentFlight++;
             }
             else if(CanMoveToForeground())
             {
-                Debug.Log("Moved to FG");
+                //Debug.Log("Moved to FG");
                 if(autoMovement != null)
                     StartCoroutine(autoMovement.MoveForwardBackward(true));
                 currentFlight++;
