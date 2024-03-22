@@ -19,8 +19,8 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public event IStairsActor.OnMoveBackwardForwardDelegate OnMoveBackwardForward;
 
-        private int PLAYER_BACKGROUND_LAYER = 0;
-        private int PLAYER_FOREGROUND_LAYER = 2;
+        private int PLAYER_BACKGROUND_LAYER = 2;
+        private int PLAYER_FOREGROUND_LAYER = 7;
 
         public static PlayerInstance Instance {get; private set;}
 
@@ -34,6 +34,7 @@ namespace RobbieWagnerGames.ZombieStairs
             playerMovement = GetComponentInChildren<PlayerMovement>();    
             autoMovement = GetComponentInChildren<AutoMovement>();
             autoMovement.canMove = false;
+            PlayerGun.Instance.gunRenderer.sortingOrder = PLAYER_FOREGROUND_LAYER + 1;
         }
 
         public bool CanMoveToBackground() => currentStairs == null && !isOnBackground;
@@ -45,6 +46,7 @@ namespace RobbieWagnerGames.ZombieStairs
             isOnBackground = false;
             yield return null;
             playerSprite.sortingOrder = PLAYER_FOREGROUND_LAYER;
+            PlayerGun.Instance.gunRenderer.sortingOrder = PLAYER_FOREGROUND_LAYER + 1;
             playerSprite.color = Color.white;
             OnMoveBackwardForward?.Invoke(this, true);
         }
@@ -54,6 +56,7 @@ namespace RobbieWagnerGames.ZombieStairs
             yield return null;
             isOnBackground = true;
             playerSprite.sortingOrder = PLAYER_BACKGROUND_LAYER;
+            PlayerGun.Instance.gunRenderer.sortingOrder = PLAYER_BACKGROUND_LAYER + 1;
             playerSprite.color = new Color(.7f, .7f, .7f, 1f);
             OnMoveBackwardForward?.Invoke(this, false);
         }

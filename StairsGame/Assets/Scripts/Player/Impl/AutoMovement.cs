@@ -4,6 +4,7 @@ using System.Linq;
 using FMODUnity;
 using RobbieWagnerGames.Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RobbieWagnerGames.ZombieStairs
 {
@@ -31,6 +32,8 @@ namespace RobbieWagnerGames.ZombieStairs
 
         protected bool isGrounded = false;
 
+        protected MovementControls movementControls;
+
         Coroutine forwardBackwardMovementCoroutine = null;
 
         protected virtual void Awake() 
@@ -43,6 +46,11 @@ namespace RobbieWagnerGames.ZombieStairs
             currentWalkSpeed = defaultWalkSpeed;
 
             characterController.collisionMask = PlayerInstance.Instance.isOnBackground ? backgroundMask : foregroundMask;
+
+            movementControls = new MovementControls();
+            movementControls.Movement.AimMode.performed += EnterAimMode;
+            movementControls.Movement.AimMode.canceled += ExitAimMode;
+            movementControls.Enable();
         }
 
         protected virtual void FixedUpdate()
@@ -102,6 +110,18 @@ namespace RobbieWagnerGames.ZombieStairs
 
             canMove = true;
             forwardBackwardMovementCoroutine = null;
+        }
+
+        public void EnterAimMode(InputAction.CallbackContext context)
+        {
+            PlayerGun.Instance.aiming = true;
+            PlayerGun.Instance.gunControls.Enable();
+        }
+
+        public void ExitAimMode(InputAction.CallbackContext context)
+        {
+            PlayerGun.Instance.aiming = false;
+            PlayerGun.Instance.gunControls.Disable();
         }
     }
 }

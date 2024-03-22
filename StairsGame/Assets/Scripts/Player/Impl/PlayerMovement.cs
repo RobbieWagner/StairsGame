@@ -246,5 +246,15 @@ namespace RobbieWagnerGames.ZombieStairs
         {
             
         }
+
+        public void EnterAimMode(InputAction.CallbackContext context)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExitAimMode(InputAction.CallbackContext context)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

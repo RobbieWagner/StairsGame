@@ -71,6 +71,15 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AimMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f6c918b-69a1-44df-bda7-359b017f1891"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -238,6 +247,28 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
                     ""action"": ""EnterBackground"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4883f3b2-b0b0-41e1-96ce-e104cf28514f"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6ef0e90e-97ab-4489-9fa1-0339d506773f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AimMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -251,6 +282,7 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
         m_Movement_Interact = m_Movement.FindAction("Interact", throwIfNotFound: true);
         m_Movement_EnterForeground = m_Movement.FindAction("EnterForeground", throwIfNotFound: true);
         m_Movement_EnterBackground = m_Movement.FindAction("EnterBackground", throwIfNotFound: true);
+        m_Movement_AimMode = m_Movement.FindAction("AimMode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -317,6 +349,7 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Interact;
     private readonly InputAction m_Movement_EnterForeground;
     private readonly InputAction m_Movement_EnterBackground;
+    private readonly InputAction m_Movement_AimMode;
     public struct MovementActions
     {
         private @MovementControls m_Wrapper;
@@ -326,6 +359,7 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_Movement_Interact;
         public InputAction @EnterForeground => m_Wrapper.m_Movement_EnterForeground;
         public InputAction @EnterBackground => m_Wrapper.m_Movement_EnterBackground;
+        public InputAction @AimMode => m_Wrapper.m_Movement_AimMode;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -350,6 +384,9 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
             @EnterBackground.started += instance.OnEnterBackground;
             @EnterBackground.performed += instance.OnEnterBackground;
             @EnterBackground.canceled += instance.OnEnterBackground;
+            @AimMode.started += instance.OnAimMode;
+            @AimMode.performed += instance.OnAimMode;
+            @AimMode.canceled += instance.OnAimMode;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -369,6 +406,9 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
             @EnterBackground.started -= instance.OnEnterBackground;
             @EnterBackground.performed -= instance.OnEnterBackground;
             @EnterBackground.canceled -= instance.OnEnterBackground;
+            @AimMode.started -= instance.OnAimMode;
+            @AimMode.performed -= instance.OnAimMode;
+            @AimMode.canceled -= instance.OnAimMode;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -393,5 +433,6 @@ public partial class @MovementControls: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnEnterForeground(InputAction.CallbackContext context);
         void OnEnterBackground(InputAction.CallbackContext context);
+        void OnAimMode(InputAction.CallbackContext context);
     }
 }

@@ -7,5 +7,7 @@ namespace RobbieWagnerGames.ZombieStairs
     {
         void ChangeSpeed(float newWalkSpeed, float newRunSpeed);
         void ResetSpeeds();
+        void EnterAimMode(InputAction.CallbackContext context);
+        void ExitAimMode(InputAction.CallbackContext context);
     }
 }
