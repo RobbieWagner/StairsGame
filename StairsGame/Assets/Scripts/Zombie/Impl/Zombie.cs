@@ -77,7 +77,6 @@ namespace RobbieWagnerGames.ZombieStairs
 
         protected virtual void OnCollisionEnter2D(Collision2D other)
         {
-            Debug.Log("hi");
             if(other.collider.GetComponent<PlayerInstance>() != null)
                 SetZombieSate(ZombieState.Attacking);
         }

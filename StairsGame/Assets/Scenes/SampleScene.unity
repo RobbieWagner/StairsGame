@@ -638,8 +638,10 @@ MonoBehaviour:
       Value: {fileID: -1443851419, guid: 3b1edc3b95e2c0042b5f090755522ccf, type: 3}
     - Key: 12
       Value: {fileID: -1918162326, guid: 3b1edc3b95e2c0042b5f090755522ccf, type: 3}
+  bullet: {fileID: 1487151750813310864, guid: 723214776b2b79b41bd13770e74fbf6d, type: 3}
   damage: 1
   shotsPerSecond: 1
+  range: 5
 --- !u!4 &593981080
 Transform:
   m_ObjectHideFlags: 0

@@ -36,7 +36,9 @@ namespace RobbieWagnerGames.ZombieStairs
         public GunType type;
         [SerializedDictionary("Aim Direction","Sprite")] 
         public SerializedDictionary<AimDirection, Sprite> GunSprites;
+        public Bullet bullet;
         public int damage = 1;
         public float shotsPerSecond = 1;
+        public float range = 5;
     }
 }

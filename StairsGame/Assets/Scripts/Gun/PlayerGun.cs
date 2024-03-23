@@ -36,13 +36,16 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void ShootGun(InputAction.CallbackContext context)
         {
-            Debug.Log("BANG!");
+            Bullet newBullet = Instantiate(currentGun.bullet);
+            newBullet.Launch(GetLocalMousePosition());
         }
+
+        private Vector2 GetLocalMousePosition() => Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
         public float GetAim()
         {
             Vector2 side1 = Vector2.up;
-            Vector2 side2 = (Vector2) (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+            Vector2 side2 = GetLocalMousePosition();
             return side1.x < side2.x ? Vector2.Angle(side1, side2) : 360 - Vector2.Angle(side1, side2);
         }
 
