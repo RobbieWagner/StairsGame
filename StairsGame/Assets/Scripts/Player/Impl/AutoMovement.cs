@@ -36,10 +36,13 @@ namespace RobbieWagnerGames.ZombieStairs
 
         Coroutine forwardBackwardMovementCoroutine = null;
 
+        [Header("Aim Mode")]
+        [SerializeField] private float aimModeWalkSpeed = 2f;
+        [SerializeField] private float aimModeRunSpeed = 4f;
+
         protected virtual void Awake() 
         {
             canMove = true;
-            movementSpeed = defaultWalkSpeed;
             running = false;
 
             currentRunSpeed = defaultRunSpeed;
@@ -56,10 +59,16 @@ namespace RobbieWagnerGames.ZombieStairs
         protected virtual void FixedUpdate()
         {
             float direction = PlayerInstance.Instance.CurrentFlight() % 2 == 0 ? 1 : -1;
-            velocity = new Vector2(direction * movementSpeed * Time.deltaTime, 
+            velocity = new Vector2(direction * GetMovementSpeed() * Time.deltaTime, 
                                 isGrounded ? -1f : - GRAVITY * Time.deltaTime);
             if(canMove)
                 characterController.Move(velocity);
+        }
+
+        protected virtual float GetMovementSpeed()
+        {
+            //TODO: add run functionality
+            return currentWalkSpeed;
         }
 
         protected virtual void LateUpdate() => UpdateGroundCheck();
@@ -85,13 +94,11 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void ChangeSpeed(float newWalkSpeed, float newRunSpeed)
         {
-            throw new System.NotImplementedException();
+            currentWalkSpeed = newWalkSpeed;
+            currentRunSpeed = newRunSpeed;
         }
 
-        public void ResetSpeeds()
-        {
-            throw new System.NotImplementedException();
-        }
+        public void ResetSpeeds() => ChangeSpeed(defaultWalkSpeed, defaultRunSpeed);
 
         public virtual IEnumerator MoveForwardBackward(bool toForeground)
         {
@@ -116,12 +123,15 @@ namespace RobbieWagnerGames.ZombieStairs
         {
             PlayerGun.Instance.aiming = true;
             PlayerGun.Instance.gunControls.Enable();
+            ChangeSpeed(aimModeWalkSpeed, aimModeRunSpeed);
+            
         }
 
         public void ExitAimMode(InputAction.CallbackContext context)
         {
             PlayerGun.Instance.aiming = false;
             PlayerGun.Instance.gunControls.Disable();
+            ResetSpeeds();
         }
     }
 }

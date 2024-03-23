@@ -86,6 +86,15 @@ namespace RobbieWagnerGames.Menu
             menuButtons[activeButtonIndex].NavigateTo();
         }
 
+        public void ConsiderMenuButton(MenuButton button)
+        {
+            foreach(MenuButton menuButton in menuButtons)
+                menuButton.NavigateAway();
+            
+            if(button != null && menuButtons.Contains(button))
+                button.NavigateTo();            
+        }
+
         private void NavigateMenu(InputAction.CallbackContext context)
         {
             float direction = context.ReadValue<float>();
@@ -110,7 +119,7 @@ namespace RobbieWagnerGames.Menu
 
         public delegate void OnSelectMenuItemDelegate();
         public event OnSelectMenuItemDelegate OnSelectMenuItem;
-        protected void InvokeOnSelectMenuItem()
+        public void InvokeOnSelectMenuItem()
         {
             OnSelectMenuItem?.Invoke();
         }

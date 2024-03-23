@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
+using RobbieWagnerGames.ZombieStairs;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace RobbieWagnerGames.Menu
 {
-    public class MenuButton : MonoBehaviour
+    public class MenuButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
     {
         [HideInInspector] public Menu parentMenu;
         [SerializeField] protected TextMeshProUGUI nameText;
@@ -24,5 +27,18 @@ namespace RobbieWagnerGames.Menu
         {
             yield return null;
         }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if(parentMenu != null) 
+            {
+                StartCoroutine(SelectButton(parentMenu));
+                parentMenu?.DisableMenu();
+                parentMenu?.InvokeOnSelectMenuItem();
+            }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData) => parentMenu?.ConsiderMenuButton(this);
+        public void OnPointerExit(PointerEventData eventData) => parentMenu?.ConsiderMenuButton(null);
     }
 }

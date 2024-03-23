@@ -169,10 +169,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   unitAnimator: {fileID: 992717380840522395}
-  defaultWalkSpeed: 3
+  defaultWalkSpeed: 4
   defaultRunSpeed: 6
   canMove: 0
   movementSounds: []
+  aimModeWalkSpeed: 3
+  aimModeRunSpeed: 4
 --- !u!114 &7246754493821575044
 MonoBehaviour:
   m_ObjectHideFlags: 0
