@@ -72,7 +72,7 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void AttackPlayer(IStairsActor player)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("Game");
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D other)
