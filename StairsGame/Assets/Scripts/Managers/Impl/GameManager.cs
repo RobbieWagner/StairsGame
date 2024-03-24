@@ -1,8 +1,12 @@
 using System.Collections;
+using System.Net;
 using RobbieWagnerGames.Managers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using DG.Tweening;
+using RobbieWagnerGames.Menu;
 
 namespace RobbieWagnerGames.ZombieStairs
 {
@@ -13,12 +17,19 @@ namespace RobbieWagnerGames.ZombieStairs
 
         [Header("Pausing")]
         public bool canPause = false;
-        public bool paused = false; 
+        public bool paused = false;
+ 
         public static string persistentDataPath;
         private GameState currentGameState = GameState.None;
         private MainGameControls gameControls;
         public GameState CurrentGameState() => currentGameState;
         
+        [Header("Game Over")]
+        [SerializeField] private Canvas gameOverCanvas;
+        [SerializeField] private Image gameOverBackground;
+        [SerializeField] private TextMeshProUGUI gameOverText;
+        [SerializeField] private BespokeGameOverMenu gameOverMenu;
+
         private int score = 0;
         public int Score
         {
@@ -74,20 +85,37 @@ namespace RobbieWagnerGames.ZombieStairs
             {
                 case GameState.None:
                 break;
+
                 case GameState.Playing:
                 if(!StartGame())
                     return false;
                 break;
+
                 case GameState.Dead:
-                if(PlayerInstance.Instance.KillPlayer())
+                if(!PlayerInstance.Instance.KillPlayer())
                     return false;
+                StartCoroutine(GameOver());
                 break;
+
                 default:
                 break;
             }
 
             currentGameState = newState;
             return true;
+        }
+
+        public IEnumerator GameOver()
+        {
+            ResumeGame();
+            canPause = false;
+            gameOverText.color = Color.clear;
+            gameOverBackground.color = Color.clear;
+            
+            gameOverCanvas.enabled = true;
+            yield return gameOverBackground.DOColor(Color.black, 1f).SetEase(Ease.InCubic).WaitForCompletion();
+            yield return gameOverText.DOColor(Color.red, 2.5f).SetEase(Ease.InCubic).WaitForCompletion();
+            gameOverMenu.SetupMenu();
         }
 
         public IEnumerator DelayStartCo()

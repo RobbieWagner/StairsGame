@@ -70,6 +70,7 @@ namespace RobbieWagnerGames.ZombieStairs
             if(canDie)
             {
                 autoMovement.canMove = false;
+                return true;
             }
             return false;
         }

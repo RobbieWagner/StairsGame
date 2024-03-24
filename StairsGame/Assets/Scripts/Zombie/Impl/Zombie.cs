@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using RobbieWagnerGames.Managers;
 using RobbieWagnerGames.Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -73,7 +74,8 @@ namespace RobbieWagnerGames.ZombieStairs
 
         public void AttackPlayer(IStairsActor player)
         {
-            SceneManager.LoadScene("Game");
+            GameManager.Instance.ChangeGameState(GameState.Dead);
+            //SceneManager.LoadScene("Game");
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D other)
