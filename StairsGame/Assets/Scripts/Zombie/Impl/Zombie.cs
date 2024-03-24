@@ -14,6 +14,7 @@ namespace RobbieWagnerGames.ZombieStairs
         [HideInInspector] public bool isOnBackground = false;
         [SerializeField] protected SpriteRenderer spriteRenderer;
         [SerializeField] protected Rigidbody2D rb2d;
+        [SerializeField] public int killScore = 50;
         protected Stairs currentStairs;
         protected int flight;
         protected int floor => flight/2;

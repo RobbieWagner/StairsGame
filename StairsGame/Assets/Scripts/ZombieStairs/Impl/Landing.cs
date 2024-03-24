@@ -13,9 +13,11 @@ namespace RobbieWagnerGames.ZombieStairs
             if(stairsActor != null)
             {
                 stairsActor.OnLandingReached();
-                //Debug.Log("reached landing");
+
+                PlayerInstance playerInstance = other.GetComponentInChildren<PlayerInstance>();
+                if(playerInstance != null)
+                    GameManager.Instance.Score += GameManager.newFloorReached;
             }
-                
         }
     }
 }

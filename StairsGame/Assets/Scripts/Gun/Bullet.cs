@@ -8,6 +8,7 @@ namespace RobbieWagnerGames.ZombieStairs
     {
         public void KillZombie(Zombie zombie)
         {
+            GameManager.Instance.Score += zombie.killScore;
             ZombieManager.Instance?.RemoveZombieFromScene(zombie);
         }
 

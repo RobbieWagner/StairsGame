@@ -8,6 +8,9 @@ namespace RobbieWagnerGames.ZombieStairs
 {
     public class GameManager : MonoBehaviour, IGameManager
     {
+        [Header("Score")]
+        public static int newFloorReached = 100;
+
         [Header("Pausing")]
         public bool canPause = false;
         public bool paused = false; 
@@ -15,6 +18,25 @@ namespace RobbieWagnerGames.ZombieStairs
         private GameState currentGameState = GameState.None;
         private MainGameControls gameControls;
         public GameState CurrentGameState() => currentGameState;
+        
+        private int score = 0;
+        public int Score
+        {
+            get { return score; }
+            set 
+            {
+                if(score == value) 
+                    return;
+                
+                score = value;
+                if(score < 0)
+                    score = 0;
+
+                OnScoreChanged?.Invoke(score);
+            }
+        }
+        public delegate void OnScoreChangedDelegate(int newScore);
+        public event OnScoreChangedDelegate OnScoreChanged;
 
         public static GameManager Instance {get; private set;}
 
