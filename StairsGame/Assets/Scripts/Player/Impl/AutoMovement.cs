@@ -54,6 +54,7 @@ namespace RobbieWagnerGames.ZombieStairs
             movementControls.Movement.AimMode.performed += EnterAimMode;
             movementControls.Movement.AimMode.canceled += ExitAimMode;
             movementControls.Enable();
+            StartCoroutine(PlayerInstance.Instance.MoveToForeground());
         }
 
         protected virtual void FixedUpdate()
